@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.small, .big{
+			width: 400px;
+			height: 400px;
+			margin-right: 20px;
+			float: left;
+			overflow: hidden;
+			position: relative;
+			white-space:pre-wrap;
+		}
+		.small span{
+			background: #FFF;
+			opacity: 0.3;
+			filter:alpha(opacity:30);
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100px;
+			height: 100px;
+			display: none;
+		}
+		.big{
+			display: none;
+		}
+		.big img{
+			position: absolute;
+			left: 0;
+			top:0;
+		}
+	</style>
+	<script type="text/javascript" src="jquery-1.9.1.js"></script>
+	<script>
+		$(function(){
+			var $divW = 400;
+			var $divH = 400;
+			var $imgW = $(".big img").outerWidth();
+			var $imgH = $(".big img").outerHeight();
+			var $scale = $imgW/$divW;//大图比div
+			$(".small span").height($divH/$scale).width($divW/$scale);//设置遮罩层的宽高
+			$(".small").hover(function(){
+				$(".small span, .big").show();//鼠标滑过显示遮罩层和大图
+				$(this).mousemove(function(e){
+					var $x = e.pageX - $(".small").offset().left - $(".small span").outerWidth()/2;//遮罩层的left值
+					var $y = e.pageY - $(".small").offset().top - $(".small span").outerHeight()/2;//遮罩层的top值
+
+					//计算遮罩层的边界
+					if($x < 0){
+						$x = 0;
+					}else if($x > $divW-$(".small span").outerWidth()){
+						$x = $divW-$(".small span").outerWidth();
+					}
+					if($y < 0){
+						$y = 0;
+					}else if($y > $divH-$(".small span").outerHeight()){
+						$y = $divH-$(".small span").outerHeight();
+					}
+					$(".small span").css({"left":$x, "top":$y});//设置遮罩层的位置
+					var $X = $x/$divW*$imgW;//计算大图的left值
+					var $Y = $y/$divH*$imgH;//计算大图的top值
+					$(".big img").css({"left":-$X,"top":-$Y});//设置大图的位置
+				});
+			},function(){
+				$(".small span, .big").hide();
+			});
+		})
+	</script>
+</head>
+<body>
+	<div class="small"><img src="bat.jpg" width="100%" height="auto" /><span></span></div>
+	<div class="big"><img src="bat.jpg" width="1200" height="1200"></div>
+</body>
+<script>
+	var name = 
+</script>
+</html>
